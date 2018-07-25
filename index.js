@@ -3,14 +3,13 @@ import PropTypes from "prop-types";
 import {
   View,
   Text,
-  ListView,
+  FlatList,
   ViewPropTypes,
   Image,
   TouchableOpacity,
   StyleSheet
 } from "react-native";
 
-const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
 const oddRowColor = "white";
 const evenRowColor = "#f2f5f7";
 
@@ -25,6 +24,7 @@ export default class Leaderboard extends Component {
     data: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
     sortBy: PropTypes.string.isRequired,
     labelBy: PropTypes.string.isRequired,
+    thisPlayer: PropTypes.object.isRequired,
 
     //optional
     sort: PropTypes.func,
@@ -76,7 +76,7 @@ export default class Leaderboard extends Component {
     const rowColor = index % 2 === 0 ? evenColor : oddColor;
 
     const rowJSx = (
-      <View style={[styles.row, { backgroundColor: rowColor }]} key={index}>
+      <View style={[styles.row, { backgroundColor: (this.props.thisPlayer.username === item.username) ? '#EAC017' : rowColor }]} key={index}>
         <View style={styles.left}>
           <Text
             style={[
@@ -122,6 +122,10 @@ export default class Leaderboard extends Component {
     this.setState({ sortedData: this._sort(this.props.data) });
   }
 
+  componentDidMount() {
+    this.list.scrollToIndex({ index: this.props.thisPlayer.userRank - 1, viewOffset: 0, viewPosition: 0.5 })
+  }
+
   componentWillReceiveProps = nextProps => {
     if (this.props.data !== nextProps.data) {
       this.setState({ sortedData: this._sort(nextProps.data) });
@@ -129,14 +133,14 @@ export default class Leaderboard extends Component {
   };
 
   render() {
-    const dataSource = ds.cloneWithRows(this.state.sortedData);
 
     return (
-      <ListView
+      <FlatList
+        ref={(list => this.list = list)}
         style={this.props.containerStyle}
-        dataSource={dataSource}
-        renderRow={(data, someShit, i) => this._renderItem(data, i)}
-        enableEmptySections
+        data={this.state.sortedData}
+        renderItem={({ item, index }) => this._renderItem(item, index)}
+        keyExtractor={(item, index) => index.toString()}
       />
     );
   }
