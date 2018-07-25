@@ -123,7 +123,9 @@ export default class Leaderboard extends Component {
   }
 
   componentDidMount() {
-    this.list.scrollToIndex({ index: this.props.thisPlayer.userRank - 1, viewOffset: 0, viewPosition: 0.5 })
+    setTimeout(() => {
+      this.list.scrollToIndex({ index: this.props.thisPlayer.userRank - 1, viewOffset: 5, viewPosition: 0.5 })
+    }, 750);
   }
 
   componentWillReceiveProps = nextProps => {
