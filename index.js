@@ -149,9 +149,9 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    borderWidth: 0.5,
-    borderRadius: 5,
-    borderColor: "#d6d7da"
+    borderWidth: 3,
+    borderRadius: 15,
+    borderColor: "transparent"
   },
   left: {
     flexDirection: "row",
