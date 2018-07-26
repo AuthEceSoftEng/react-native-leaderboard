@@ -76,7 +76,7 @@ export default class Leaderboard extends Component {
     const rowColor = index % 2 === 0 ? evenColor : oddColor;
 
     const rowJSx = (
-      <View style={[styles.row, { backgroundColor: (this.props.thisPlayer.username === item.username) ? '#EAC017' : rowColor }]} key={index}>
+      <View style={[styles.row, { backgroundColor: (this.props.thisPlayer.player_id === item.player_id) ? '#EAC017' : rowColor }]} key={index}>
         <View style={styles.left}>
           <Text
             style={[
