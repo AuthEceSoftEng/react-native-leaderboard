@@ -139,6 +139,7 @@ export default class Leaderboard extends Component {
     return (
       <FlatList
         ref={(list => this.list = list)}
+        initialNumToRender={this.state.sortedData.length}
         style={this.props.containerStyle}
         data={this.state.sortedData}
         renderItem={({ item, index }) => this._renderItem(item, index)}
