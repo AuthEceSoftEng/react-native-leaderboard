@@ -144,6 +144,7 @@ export default class Leaderboard extends Component {
         data={this.state.sortedData}
         renderItem={({ item, index }) => this._renderItem(item, index)}
         keyExtractor={(item, index) => index.toString()}
+        onScrollToIndexFailed={() => {}}
       />
     );
   }
