@@ -124,7 +124,9 @@ export default class Leaderboard extends Component {
 
   componentDidMount() {
     setTimeout(() => {
-      this.list.scrollToIndex({ index: this.props.thisPlayer.userRank - 1, viewOffset: 5, viewPosition: 0.5 })
+      try {
+        this.list.scrollToIndex({ index: this.props.thisPlayer.userRank - 1, viewOffset: 5, viewPosition: 0.5 })
+      } catch (error) {/**/ }
     }, 750);
   }
 
@@ -144,7 +146,7 @@ export default class Leaderboard extends Component {
         data={this.state.sortedData}
         renderItem={({ item, index }) => this._renderItem(item, index)}
         keyExtractor={(item, index) => index.toString()}
-        onScrollToIndexFailed={() => {}}
+        onScrollToIndexFailed={() => { }}
       />
     );
   }
@@ -154,6 +156,7 @@ const styles = StyleSheet.create({
   row: {
     paddingTop: 15,
     paddingBottom: 15,
+    marginBottom: 15,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
