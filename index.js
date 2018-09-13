@@ -18,6 +18,9 @@ export default class Leaderboard extends Component {
     sortedData: []
   };
 
+  numberOfTries = 0;
+  failed = true;
+
   static propTypes = {
     ...ViewPropTypes,
     //required
@@ -123,10 +126,13 @@ export default class Leaderboard extends Component {
   }
 
   componentDidMount() {
-    setTimeout(() => {
+    this.interval = setInterval(() => {
       try {
+        this.failed = false;
         this.list.scrollToIndex({ index: this.props.thisPlayer.userRank - 1, viewOffset: 5, viewPosition: 0.5 })
-      } catch (error) {/**/ }
+        this.numberOfTries += 1;
+        if (this.numberOfTries > 5 || !this.failed) clearInterval(this.interval)
+      } catch (error) { /**/ }
     }, 750);
   }
 
@@ -136,17 +142,21 @@ export default class Leaderboard extends Component {
     }
   };
 
+  componentWillUnmount() {
+    clearInterval(this.timeout);
+  }
+
   render() {
 
     return (
       <FlatList
         ref={(list => this.list = list)}
-        initialNumToRender={this.state.sortedData.length}
+        initialNumToRender={this.props.thisPlayer.userRank + 20}
         style={this.props.containerStyle}
         data={this.state.sortedData}
         renderItem={({ item, index }) => this._renderItem(item, index)}
         keyExtractor={(item, index) => index.toString()}
-        onScrollToIndexFailed={() => { }}
+        onScrollToIndexFailed={() => { this.failed = true }}
       />
     );
   }
